@@ -32,6 +32,7 @@ const Model = () => {
      const [marque, setNomMarque] = useState([]);
      const [error, setError] = useState(null);
      const [born , setBorne] = useState(null);
+     const [load, setLoad] = useState(false);
 
      useEffect(() => {
           axios.get(localStorage.getItem('mapping')+'marques')
@@ -45,7 +46,7 @@ const Model = () => {
               }
             })
             .catch(error => console.error('Erreur lors de la récupération des couleurs', error));
-        }, []);
+        }, [load]);
    
      useEffect(() => {
        axios.get(localStorage.getItem('mapping')+'v_model_marques')
@@ -83,7 +84,7 @@ const Model = () => {
         };
 
      const handleSubmit = async (e) => {
-    
+      e.preventDefault();
           console.log('Valeur de nom:', nom);
           console.log('Valeur de nom:', marque.idmarque);
         
@@ -105,6 +106,7 @@ const Model = () => {
                  throw new Error('Problème lors de la récupération des données');
                }
                const data = await response.json();
+               setLoad(true);
                console.log("rien data");
                console.log(data);
                console.log(data.data);
@@ -112,7 +114,6 @@ const Model = () => {
                console.error('Erreur:', error);
                throw error;
              }
-             e.preventDefault();
         };
        ///update 
     const [indexmodif, setIndexmodif] = useState(null);

@@ -19,10 +19,12 @@ const Profil = () => {
     const { id } = useParams();
     const idClient=id;
     console.log("koko "+id);
-    const [nbrpost, setNbrpost] = useState([]);
+    const [nbrpost, setNbrpost] = useState(null);
     const [valider, setValider] = useState(null);
     const [vendu, setVendu] = useState(null);
     const [annonce, setAnnonce] = useState(null);
+    const [load, setLoad] = useState(null);
+
 
     const [client, setClient] = useState({
         nomclient: '',
@@ -50,9 +52,13 @@ const Profil = () => {
     return readableDate;
     }
     function getNbretat(){
+       
         if(nbrpost!=null){
             for(let i=0;i<nbrpost.length;i++){
-                if(nbrpost[i].idetat==2){
+                console.log("fff");
+                console.log("uu"+nbrpost[i].idetat);
+                if(parseInt(nbrpost[i].idetat)==2){
+                    console.log("ggg"+valider);
                     setValider(nbrpost[i].nbr)
                 }if(nbrpost[i].idetat==3){
                     setVendu(nbrpost[i].nbr)
@@ -64,21 +70,27 @@ const Profil = () => {
         }
         // console.log(valider); 
     }
-    useEffect(() => {
+    function first() {
+
         axios.get(localStorage.getItem('mapping')+`v_infoclient_detaille?id=${idClient}`)
           .then(response => {
             const clientData = response.data.data;
             console.log(clientData)
             setNbrpost(clientData);
-            
+            //getNbretat();
             setClient(JSON.parse(localStorage.getItem('profileclient')));
-            getNbretat();
             console.log(client)
             console.log("client vvvv")
             console.log(client)
           })
           .catch(error => console.error('Erreur lors de la récupération du client', error));
-      }, [idClient]);
+    }
+    
+
+    useEffect(() => {
+        first();
+        //   getNbretat();
+      }, []);
     console.log(client);
   return (
     <div className="dashboard-main-wrapper">
@@ -124,13 +136,6 @@ const Profil = () => {
                                     </ul>
                                     </div>
                                 </div>
-                              
-                                <div class="card-body border-top">
-                                    <h3 class="font-16">Category</h3>
-                                    <div>
-                                        <Link href="#" class="badge badge-light mr-1">Fitness</Link><Link href="#" class="badge badge-light mr-1">Life Style</Link><Link href="#" class="badge badge-light mr-1">Gym</Link>
-                                    </div>
-                                </div>
                             </div>
                </div>
                <div class="col-xl-9 col-lg-9 col-md-7 col-sm-12 col-12">
@@ -142,9 +147,6 @@ const Profil = () => {
                                    <li class="nav-item">
                                         <a class="nav-link" id="pills-campaign-tab" data-toggle="pill" href="#pills-campaign" role="tab" aria-controls="pills-campaign" aria-selected="true">Status</a>
                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="pills-msg-tab" data-toggle="pill" href="#pills-msg" role="tab" aria-controls="pills-msg" aria-selected="false">Envoyer un message</a>
-                                    </li>
                                 </ul>
                                 <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-packages" role="tabpanel" aria-labelledby="pills-packages-tab">
@@ -167,77 +169,49 @@ const Profil = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="pills-campaign" role="tabpanel" aria-labelledby="pills-campaign-tab">
-                                        <div class="row">
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <div class="section-block">
-                                                    <h3 class="section-title">Annonces</h3>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <h1 class="mb-1">{valider}</h1>
-                                                        <Link to={`/clientAnnoncesto/${idClient}/valider`}>Valider</Link>
+                                    {nbrpost !== null ? (
+                                        <div class="tab-pane fade" id="pills-campaign" role="tabpanel" aria-labelledby="pills-campaign-tab">
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="section-block">
+                                                        <h3 class="section-title">Annonces</h3>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <h1 class="mb-1">{parseInt(annonce)-parseInt(valider)}</h1>
-                                                        <p>Refuser</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <h1 class="mb-1">{parseInt(valider)-parseInt(vendu)}</h1>
-                                                        <p>En cours</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <h1 class="mb-1">{vendu}</h1>
-                                                        <p>Vendu</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="pills-msg" role="tabpanel" aria-labelledby="pills-msg-tab">
-                                        <div class="card">
-                                            <h5 class="card-header">Send Messages</h5>
-                                            <div class="card-body">
-                                                <form>
-                                                    <div class="row">
-                                                        <div class="offset-xl-3 col-xl-6 offset-lg-3 col-lg-3 col-md-12 col-sm-12 col-12 p-4">
-                                                            <div class="form-group">
-                                                                <label for="name">Votre nom</label>
-                                                                <input type="text" class="form-control form-control-lg" id="name" placeholder=""/>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="email">Votre Email</label>
-                                                                <input type="email" class="form-control form-control-lg" id="email" placeholder=""/>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="subject">Object</label>
-                                                                <input type="text" class="form-control form-control-lg" id="subject" placeholder=""/>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="messages">Messagaes</label>
-                                                                <textarea class="form-control" id="messages" rows="3"></textarea>
-                                                            </div>
-                                                            <button type="submit" class="btn btn-primary float-right">Envoyer</button>
+                                                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <h1 class="mb-1">{Math.max(0,nbrpost[2].nbr)}</h1>
+                                                            <p>Valider</p>
                                                         </div>
                                                     </div>
-                                                </form>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <h1 class="mb-1">{Math.max(0, parseInt(nbrpost[0].nbr) - parseInt(nbrpost[2].nbr))}</h1>
+                                                            <p>Refuser</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <h1 class="mb-1">{Math.max(0,parseInt(nbrpost[2].nbr) - parseInt(nbrpost[1].nbr))}</h1>
+                                                            <p>En cours</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <h1 class="mb-1">{Math.max(0,nbrpost[2].nbr)}</h1>
+                                                            <p>Vendu</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    ) : null}
                                 </div>
                             </div>
                </div>

@@ -23,15 +23,15 @@ function Login() {
             ...prevData,
             password: event.target.value,
           }));
-    };
+    }; 
+
     const onsubRecherche = async (event) =>{
         event.preventDefault();
         console.log(user);
         try {
-            https://backspring-production-246e.up.railway.app/varotrafiaraback/
             localStorage.clear();
-            localStorage.setItem("mapping","https://backspring-production.up.railway.app/varotrafiaraback/");
-            localStorage.setItem("mappingimages","https://backspring-production.up.railway.app/images/");
+            localStorage.setItem("mapping","https://varotrafiaraoccasion-production.up.railway.app/varotrafiaraback/");
+            localStorage.setItem("mappingimages","https://varotrafiaraoccasion-production.up.railway.app/images/");
             const response = await fetch(localStorage.getItem('mapping')+"loginback",{
               method: 'POST',
               headers: {
@@ -49,7 +49,7 @@ function Login() {
                 localStorage.setItem("token",data.data.token);
                 window.location.href = '/valider';
             }else{
-                window.location.href = '/valider';
+                window.location.href = '/';
             }
            
           } catch (error) {
@@ -58,13 +58,17 @@ function Login() {
           }
          
     } 
+    useEffect(()=>{
+        localStorage.setItem("mapping","http://localhost:8080/varotrafiaraback/");
+        localStorage.setItem("mappingimages","http://localhost:8080/images/");
+    })
  
   return (
     <section className="ftco-section">
     <div className="container">
         <div className="row justify-content-center">
             <div className="col-md-6 text-center mb-5">
-                <h2 className="heading-section">Varotra fiara Admin</h2>
+                <h2 className="heading-section">Login to Varotra fiara Admin</h2>
             </div>
         </div>
         <div className="row justify-content-center">
@@ -72,15 +76,15 @@ function Login() {
                 <div className="wrap d-md-flex">
                     <div className="text-wrap p-4 p-lg-5 text-center d-flex align-items-center order-md-last">
                         <div className="text w-100">
-                            <h2>Bienvenue sur Varotra Fiara Admin</h2>
-                            <p>La création de compte se fait sur la version mobile de notre site. Nous vous invitons à créer un compte</p>
-                            <a href="#" className="btn btn-white btn-outline-white">Download</a>
+                            <h2>Welcome to Varotra Fiara Admin</h2>
+                            {/* <p>La création de compte se fait sur la version mobile de notre site. Nous vous invitons à créer un compte</p> */}
+                            <a href="/inscription" className="btn btn-white btn-outline-white">Download</a>
                         </div>
                     </div>
                     <div className="login-wrap p-4 p-lg-5">
                         <div className="d-flex">
                             <div className="w-100">
-                                <h3 className="mb-4">Connexion</h3>
+                                <h3 className="mb-4">Login</h3>
                             </div>
                             <div className="w-100">
                                 <p className="social-media d-flex justify-content-end">
@@ -92,14 +96,16 @@ function Login() {
                         <form  className="signin-form" onSubmit={onsubRecherche} >
                             <div className="form-group mb-3">
                                 <label className="label" htmlFor="name">Email </label>
-                                <input type="text" className="form-control" value="marieclaudiarasolonjatovo@gmail.com" required  onChange={inputEmail} />
+                                <label>marieclaudiarasolonjatovo@gmail.com</label>
+                                <input type="text" className="form-control" placeholder="Username" required  onChange={inputEmail} />
                             </div>
                             <div className="form-group mb-3">
-                                <label className="label" htmlFor="password">Mot de passe </label>
-                                <input type="password" className="form-control" value="mertina5041" required  onChange={inputPassword} />
+                                <label className="label" htmlFor="password">Password </label>
+                                <label>mertina5041</label>
+                                <input type="password" className="form-control" placeholder="Password" required  onChange={inputPassword} />
                             </div>
                             <div className="form-group">
-                                <button type="submit" className="form-control btn btn-primary submit px-3">Se connecter</button>
+                                <button type="submit" className="form-control btn btn-primary submit px-3">Login</button>
                             </div>
                             {/* <div className="form-group d-md-flex">
                                 <div className="w-50 text-left">

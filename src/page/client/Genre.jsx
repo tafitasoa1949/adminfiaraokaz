@@ -30,6 +30,7 @@ const Genre = () => {
   const [colors, setColors] = useState([]);
   const [nom, setNom] = useState('');
   const [error, setError] = useState(null);
+  const [load, setLoad] = useState(false);
 
   useEffect(() => {
     axios.get(localStorage.getItem('mapping')+'genres')
@@ -43,10 +44,10 @@ const Genre = () => {
         }
       })
       .catch(error => console.error('Erreur lors de la récupération des couleurs', error));
-  }, []);
+  }, [load]);
 
   const handleSubmit = async (e) => {
-    
+      e.preventDefault();
      console.log('Valeur de nom:', nom);
    
      const couleurData = {
@@ -66,6 +67,7 @@ const Genre = () => {
             throw new Error('Problème lors de la récupération des données');
           }
           const data = await response.json();
+          setLoad(true);
           console.log("rien data");
           console.log(data);
           console.log(data.data);
@@ -73,7 +75,6 @@ const Genre = () => {
           console.error('Erreur:', error);
           throw error;
         }
-        e.preventDefault();
    };
    const handleDelete = async (id) => {
     try {
@@ -100,6 +101,72 @@ const Genre = () => {
       throw error;
     }
   };
+  ///update 
+  const [indexmodif, setIndexmodif] = useState(null);
+  const [updateValue, setUpdateValue] = useState(null);
+  const [updateNom, setUpdateNom] = useState(null);
+  const setvalueupdate= (id)=>{
+    for(let i=0;i<colors.length;i++){
+        if(colors[i].idcouleur==id){
+          setUpdateValue(colors[i]);
+          setUpdateNom(colors[i].nomcouleur);
+          setIndexmodif(colors[i].idcouleur)
+          console.log(updateValue);
+        }
+    }
+  }
+  const setvaluehandler= (event)=>{
+      event.preventDefault();
+      setUpdateValue((prevData) => ({
+        ...prevData,
+        nomcouleur: event.target.value,
+      }));
+      setUpdateNom(event.target.value);
+     
+  }
+  const [errordeclaration, setErrordeclaration] = useState(null);
+  const handleErrorClose = () => {
+    setUpdateValue(null);
+    setUpdateNom(null);
+  };
+
+  const modifupdate = async (e) => {
+    try {
+      const response = await fetch(localStorage.getItem('mapping')+"couleur", {
+        method: 'PUT', 
+        headers: {
+          'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify(updateValue)
+      });
+      
+      if (!response.ok) {
+        throw new Error('Problème lors de la récupération des données');
+      }
+      const data = await response.json();
+      console.log("rien data");
+      setColors((prevColors) => {
+        const updatedcolors = [...prevColors];
+        for(let i=0 ;i<updatedcolors.length;i++){
+          if(updatedcolors[i].idcouleur==indexmodif){
+            updatedcolors[i]=updateValue;
+          }
+        }
+        return updatedcolors;
+      });
+      console.log('BOIT DE VITESSE')
+      console.log(updateValue)
+      console.log(data);
+      console.log(data.data);
+    } catch (error) {
+      console.error('Erreur:', error);
+      throw error;
+    }
+   
+    
+  
+    // e.preventDefault();
+  };
   return (
     <div className="dashboard-main-wrapper">
       <Navbar />
@@ -110,7 +177,7 @@ const Genre = () => {
           <div className="row">
             <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
               <div className="card">
-                <h5 className="card-header">Listes de marques</h5>
+                <h5 className="card-header">Listes de genres</h5>
                 <div className="card-body">
                   <table className="table table-hover">
                     <thead>
@@ -124,7 +191,11 @@ const Genre = () => {
                       {colors.slice(bornePaginations[0], bornePaginations[1]).map((color, index) => (
                         <tr key={index}>
                           <td>{color.nomgenre}</td>
-                          <td><Link className="btn btn-warning btn-rounded btn-fw"><i className="mdi mdi-autorenew"></i></Link></td>
+                          <td>
+                            <button className="btn btn-info btn-rounded btn-fw" onClick={() =>setvalueupdate(color.idcouleur)}>
+                                      <i className="mdi mdi-autorenew"></i>
+                            </button>
+                          </td>
                           <td>
                               <button className="btn btn-danger btn-rounded btn-fw" onClick={() => handleDelete(color.idcouleur)}>
                                 <i className="mdi mdi-delete"></i>

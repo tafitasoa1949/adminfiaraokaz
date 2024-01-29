@@ -30,6 +30,7 @@ const Marque = () => {
      const [marque, setMarque] = useState([]);
      const [nom, setNomMarque] = useState([]);
      const [error, setError] = useState(null);
+     const [load, setLoad] = useState(false);
    
      useEffect(() => {
        axios.get(localStorage.getItem('mapping')+'marques')
@@ -43,10 +44,10 @@ const Marque = () => {
            }
          })
          .catch(error => console.error('Erreur lors de la récupération des couleurs', error));
-     }, []);
+     }, [load]);
 
      const handleSubmit = async (e) => {
-    
+      e.preventDefault();
           console.log('Valeur de nom:', nom);
         
           const marqueData = {
@@ -66,6 +67,7 @@ const Marque = () => {
                  throw new Error('Problème lors de la récupération des données');
                }
                const data = await response.json();
+               setLoad(true);
                console.log("rien data");
                console.log(data);
                console.log(data.data);
@@ -73,7 +75,7 @@ const Marque = () => {
                console.error('Erreur:', error);
                throw error;
              }
-             e.preventDefault();
+             
         };
 
         

@@ -71,6 +71,7 @@ const Valider = () => {
             const data = await response.json();
             localStorage.setItem('select',JSON.stringify(data));
             setSelectvalue(data)
+            console.log(data);
           } catch (error) {
             console.error('Erreur:', error);
             throw error;

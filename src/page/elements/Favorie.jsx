@@ -42,6 +42,7 @@ const Favorie = () => {
      const [borneb,setBorneb] = useState('');
      const [pourcentage, setPourcentage] = useState('');
      const [error, setError] = useState(null);
+     const [load, setLoad] = useState(false);
 
      useEffect(() => {
           axios.get(localStorage.getItem('mapping')+'configufavories')
@@ -55,7 +56,7 @@ const Favorie = () => {
               }
             })
             .catch(error => console.error('Erreur lors de la récupération des  configufavorie', error));
-        }, []);
+        }, [load]);
         
         const handleSubmit = async (e) => {
             e.preventDefault();
@@ -87,6 +88,7 @@ const Favorie = () => {
                  throw new Error('Problème lors de la récupération des données');
                }
                const data = await response.json();
+               setLoad(true);
                console.log("rien data");
                console.log(data);
                console.log(data.data);
@@ -94,7 +96,6 @@ const Favorie = () => {
                console.error('Erreur:', error);
                throw error;
              }
-            //  e.preventDefault();
         };
         const handleDelete = async (id) => {
           try {

@@ -29,6 +29,7 @@ const Etat = () => {
      const [etat, setEtat] = useState([]);
      const [nom, setNomEtat] = useState([]);
      const [error, setError] = useState(null);
+     const [load, setLoad] = useState(false);
    
      useEffect(() => {
        axios.get(localStorage.getItem('mapping')+'etats')
@@ -42,10 +43,10 @@ const Etat = () => {
            }
          })
          .catch(error => console.error('Erreur lors de la récupération des couleurs', error));
-     }, []);
+     }, [load]);
 
      const handleSubmit = async (e) => {
-    
+      e.preventDefault();
           console.log('Valeur de nom:', nom);
         
           const etatData = {
@@ -65,6 +66,7 @@ const Etat = () => {
                  throw new Error('Problème lors de la récupération des données');
                }
                const data = await response.json();
+               setLoad(true);
                console.log("rien data");
                console.log(data);
                console.log(data.data);
@@ -72,7 +74,6 @@ const Etat = () => {
                console.error('Erreur:', error);
                throw error;
              }
-             e.preventDefault();
         };
 
         const handleDelete = async (id) => {

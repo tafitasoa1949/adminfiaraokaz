@@ -29,6 +29,7 @@ const Equipement = () => {
      const [equipement, setEquipement] = useState([]);
      const [an, setNomEquipement] = useState([]);
      const [error, setError] = useState(null);
+     const [load, setLoad] = useState(false);
    
      useEffect(() => {
        axios.get(localStorage.getItem('mapping')+'equipements')
@@ -42,10 +43,10 @@ const Equipement = () => {
            }
          })
          .catch(error => console.error('Erreur lors de la récupération des couleurs', error));
-     }, []);
+     }, [load]);
 
      const handleSubmit = async (e) => {
-    
+      e.preventDefault();
           console.log('Valeur de nom:', an);
         
           const equipementData = {
@@ -65,6 +66,7 @@ const Equipement = () => {
                  throw new Error('Problème lors de la récupération des données');
                }
                const data = await response.json();
+               setLoad(true);
                console.log("rien data");
                console.log(data);
                console.log(data.data);
@@ -72,7 +74,7 @@ const Equipement = () => {
                console.error('Erreur:', error);
                throw error;
              }
-             e.preventDefault();
+            
         };
 
         const handleDelete = async (id) => {

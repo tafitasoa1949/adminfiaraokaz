@@ -29,6 +29,8 @@ const TypeVehicule = () => {
      const [TypeVehicules, setTypeVehicules] = useState([]);
      const [nom, setNomTypeVehicule] = useState([]);
      const [error, setError] = useState(null);
+     const [load, setLoad] = useState(false);
+     
      useEffect(() => {
           axios.get(localStorage.getItem('mapping')+'typevehicules')
             .then(response => {
@@ -41,12 +43,11 @@ const TypeVehicule = () => {
               }
             })
             .catch(error => console.error('Erreur lors de la récupération des couleurs', error));
-        }, []);
+        }, [load]);
      //insert 
      const handleSubmit = async (e) => {
-    
+          e.preventDefault();
           console.log('Valeur de nom:', nom);
-        
           const TypeVehiculeData = {
                idtypevehicule : null,
                nomtypevehicule : nom
@@ -64,6 +65,7 @@ const TypeVehicule = () => {
                  throw new Error('Problème lors de la récupération des données');
                }
                const data = await response.json();
+               setLoad(true);
                console.log("rien data");
                console.log(data);
                //const responseData = await response.json();
@@ -73,7 +75,6 @@ const TypeVehicule = () => {
                console.error('Erreur:', error);
                throw error;
              }
-             e.preventDefault();
         };
    //delete
    const handleDelete = async (id) => {
