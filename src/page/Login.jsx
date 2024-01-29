@@ -49,7 +49,7 @@ function Login() {
                 localStorage.setItem("token",data.data.token);
                 window.location.href = '/valider';
             }else{
-                window.location.href = '/valider';
+                window.location.href = '/';
             }
            
           } catch (error) {
