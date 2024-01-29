@@ -47,9 +47,9 @@ function Login() {
             if(data.data!=null){
                 localStorage.setItem("infoadmin",JSON.stringify(data.data.admin));
                 localStorage.setItem("token",data.data.token);
-                window.location.href = '/home';
+                window.location.href = '/valider';
             }else{
-                window.location.href = '/home';
+                window.location.href = '/valider';
             }
            
           } catch (error) {

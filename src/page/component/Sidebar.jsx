@@ -41,16 +41,8 @@ const Sidebar = () => {
                <li class="nav-item">
                     <Link class="nav-link" to="/client">Clients</Link>
                </li>
-               <li className="nav-item">
-                    <Link className="nav-link" data-toggle="collapse" aria-expanded="false" data-target="#submenu-10" aria-controls="submenu-10">
-                         <i className="fab fa-fw fa-wpforms"></i>Annonces
-                    </Link>
-                    <div id="submenu-10" className="collapse submenu">
-                         <ul className="nav flex-column">
-                              <li className="nav-item"><Link to="/home" className="nav-link">Non valider</Link></li>
-                              <li className="nav-item"><Link to="/valider" className="nav-link">Valider</Link></li>
-                         </ul>
-                    </div>
+               <li class="nav-item">
+                    <Link class="nav-link" to="/valider">Annonces</Link>
                </li>
                <li class="nav-divider">
                     Paramètres et statistique
